@@ -68,6 +68,7 @@ object YuYinHeChengUtils {
      * @param offlineVoice 离线发音，OfflineResource.VOICE_MALE即为离线女声发音。OfflineResource.VOICE_MALE男声
      */
     @JvmStatic
+    @JvmOverloads
     fun init(
         @NonNull activity: AppCompatActivity,
         requestPermissionsCode: Int,
