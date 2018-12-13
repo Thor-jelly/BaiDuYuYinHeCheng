@@ -2,16 +2,11 @@ package com.jelly.thor.baiduyuyinhecheng
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.os.Build
 import android.os.Handler
 import android.os.Message
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.NonNull
@@ -22,9 +17,7 @@ import com.baidu.tts.chainofresponsibility.logger.LoggerProxy
 import com.baidu.tts.client.SpeechSynthesizer
 import com.baidu.tts.client.TtsMode
 import com.jelly.thor.baiduyuyinhecheng.control.InitConfig
-import com.jelly.thor.baiduyuyinhecheng.control.MySyntherizer
 import com.jelly.thor.baiduyuyinhecheng.control.NonBlockSyntherizer
-import com.jelly.thor.baiduyuyinhecheng.listener.MessageListener
 import com.jelly.thor.baiduyuyinhecheng.util.AutoCheck
 import com.jelly.thor.baiduyuyinhecheng.util.OfflineResource
 import java.io.IOException
@@ -38,6 +31,12 @@ import java.util.*
  */
 object YuYinHeChengUtils {
     private const val TAG = "YuYinHeChengUtils"
+
+    /**
+     * 是否打印日志
+     */
+    @JvmField
+    var mDebug = true
 
     //1.首先需要设置一些参数
     private var appId: String? = null
@@ -60,6 +59,13 @@ object YuYinHeChengUtils {
             + "纯在线请修改代码里ttsMode为TtsMode.ONLINE， 没有纯离线。\n"
             + "本Demo的默认参数设置为wifi情况下在线合成, 其它网络（包括4G）使用离线合成。 在线普通女声发音，离线男声发音.\n"
             + "合成可以多次调用，SDK内部有缓存队列，会依次完成。\n\n")
+
+    /**
+     * 设置是否打印日志
+     */
+    fun setDebugPrint(debug: Boolean) {
+        mDebug = debug
+    }
 
     /**
      * @param activity 用来申请权限
@@ -126,7 +132,7 @@ object YuYinHeChengUtils {
     @JvmStatic
     fun speak(text: String) {
         val speak = synthesizer?.speak(text) ?: throw UnsupportedOperationException("请先调用初始化方法")
-        if (BuildConfig.DEBUG && speak != 0) {
+        if (mDebug && speak != 0) {
             Log.e(TAG, "合成并播放错误码=$speak 错误码文档:http://yuyin.baidu.com/docs/tts/122")
         }
     }
@@ -236,7 +242,7 @@ object YuYinHeChengUtils {
      */
     private fun initialTts() {
         //日志打印在logcat中
-        LoggerProxy.printable(BuildConfig.DEBUG)
+        LoggerProxy.printable(mDebug)
         // 设置初始化参数
         // 此处可以改为 含有您业务逻辑的SpeechSynthesizerListener的实现类
         //需要监听合成状态的时候用到 val listener = MessageListener(mainHandler)
@@ -249,7 +255,7 @@ object YuYinHeChengUtils {
 
         // 如果您集成中出错，请将下面一段代码放在和demo中相同的位置，并复制InitConfig 和 AutoCheck到您的项目中
         // 上线时请删除AutoCheck的调用
-        if (BuildConfig.DEBUG) {
+        if (mDebug) {
             AutoCheck.getInstance(this.activity!!.applicationContext).check(initConfig, @SuppressLint("HandlerLeak")
             object : Handler() {
                 override fun handleMessage(msg: Message) {

@@ -1,5 +1,7 @@
 # 百度语音合成集成
 
+[![GitHub release](https://img.shields.io/badge/release-1.0.6-green.svg)]()
+
 # 自己构建成工具类
 
 ## 1.初始化

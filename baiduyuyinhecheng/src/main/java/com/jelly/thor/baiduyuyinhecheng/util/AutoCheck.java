@@ -177,7 +177,7 @@ public class AutoCheck {
 
     private AutoCheck(Context context) {
         this.context = context;
-        checks = new LinkedHashMap<String, Check>();
+        checks = new LinkedHashMap<>();
     }
 
     private static class PrintConfig {

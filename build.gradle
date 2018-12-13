@@ -2,6 +2,7 @@
 buildscript {
     ext.kotlin_version = '1.3.10'
     repositories {
+        maven { url 'http://oss.shandian.tech:8081/repository/android/' }
         google()
         jcenter()
     }
@@ -13,6 +14,7 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'http://oss.shandian.tech:8081/repository/android/' }
         google()
         jcenter()
     }

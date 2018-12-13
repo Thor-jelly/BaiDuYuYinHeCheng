@@ -7,7 +7,7 @@ import com.baidu.tts.auth.AuthInfo;
 import com.baidu.tts.client.SpeechSynthesizeBag;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.TtsMode;
-import com.jelly.thor.baiduyuyinhecheng.BuildConfig;
+import com.jelly.thor.baiduyuyinhecheng.YuYinHeChengUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class MySyntherizer {
      */
     boolean init(InitConfig config) {
 
-        if (BuildConfig.DEBUG) {
+        if (YuYinHeChengUtils.mDebug) {
             Log.i(TAG, "初始化开始");
         }
         boolean isMix = config.getTtsMode().equals(TtsMode.MIX);
@@ -63,12 +63,12 @@ public class MySyntherizer {
             if (!authInfo.isSuccess()) {
                 // 离线授权需要网站上的应用填写包名。本demo的包名是com.baidu.tts.sample，定义在build.gradle中
                 String errorMsg = authInfo.getTtsError().getDetailMessage();
-                if (BuildConfig.DEBUG) {
+                if (YuYinHeChengUtils.mDebug) {
                     Log.i(TAG, "鉴权失败 =" + errorMsg);
                 }
                 return false;
             } else {
-                if (BuildConfig.DEBUG) {
+                if (YuYinHeChengUtils.mDebug) {
                     Log.i(TAG, "验证通过，离线正式授权文件存在。");
                 }
             }
@@ -77,13 +77,13 @@ public class MySyntherizer {
         // 初始化tts
         int result = mSpeechSynthesizer.initTts(config.getTtsMode());
         if (result != 0) {
-            if (BuildConfig.DEBUG) {
+            if (YuYinHeChengUtils.mDebug) {
                 Log.i(TAG, "【error】initTts 初始化失败 + errorCode：" + result);
             }
             return false;
         }
         // 此时可以调用 speak和synthesize方法
-        if (BuildConfig.DEBUG) {
+        if (YuYinHeChengUtils.mDebug) {
             Log.i(TAG, "合成引擎初始化成功");
         }
         return true;
@@ -160,7 +160,7 @@ public class MySyntherizer {
      */
     public int loadModel(String modelFilename, String textFilename) {
         int res = mSpeechSynthesizer.loadModel(modelFilename, textFilename);
-        if (BuildConfig.DEBUG) {
+        if (YuYinHeChengUtils.mDebug) {
             Log.i(TAG, "切换离线发音人成功。");
         }
         return res;

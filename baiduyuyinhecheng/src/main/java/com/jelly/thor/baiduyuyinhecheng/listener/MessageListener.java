@@ -3,7 +3,7 @@ package com.jelly.thor.baiduyuyinhecheng.listener;
 import android.util.Log;
 import com.baidu.tts.client.SpeechError;
 import com.baidu.tts.client.SpeechSynthesizerListener;
-import com.jelly.thor.baiduyuyinhecheng.BuildConfig;
+import com.jelly.thor.baiduyuyinhecheng.YuYinHeChengUtils;
 
 /**
  * SpeechSynthesizerListener 简单地实现，仅仅记录日志
@@ -18,7 +18,7 @@ public class MessageListener implements SpeechSynthesizerListener {
      */
     @Override
     public void onSynthesizeStart(String utteranceId) {
-        if (BuildConfig.DEBUG) {
+        if (YuYinHeChengUtils.mDebug) {
             Log.i(TAG, "准备开始合成,序列号:" + utteranceId);
         }
     }
@@ -31,7 +31,7 @@ public class MessageListener implements SpeechSynthesizerListener {
      */
     @Override
     public void onSynthesizeDataArrived(String utteranceId, byte[] bytes, int progress) {
-        if (BuildConfig.DEBUG) {
+        if (YuYinHeChengUtils.mDebug) {
             Log.i(TAG, "合成进度回调, progress：" + progress + ";序列号:" + utteranceId);
         }
     }
@@ -41,14 +41,14 @@ public class MessageListener implements SpeechSynthesizerListener {
      */
     @Override
     public void onSynthesizeFinish(String utteranceId) {
-        if (BuildConfig.DEBUG) {
+        if (YuYinHeChengUtils.mDebug) {
             Log.i(TAG, "合成结束回调, 序列号:" + utteranceId);
         }
     }
 
     @Override
     public void onSpeechStart(String utteranceId) {
-        if (BuildConfig.DEBUG) {
+        if (YuYinHeChengUtils.mDebug) {
             Log.i(TAG, "播放开始回调, 序列号:" + utteranceId);
         }
     }
@@ -60,7 +60,7 @@ public class MessageListener implements SpeechSynthesizerListener {
      */
     @Override
     public void onSpeechProgressChanged(String utteranceId, int progress) {
-        if (BuildConfig.DEBUG) {
+        if (YuYinHeChengUtils.mDebug) {
             Log.i(TAG, "播放进度回调, progress：" + progress + ";序列号:" + utteranceId);
         }
     }
@@ -70,7 +70,7 @@ public class MessageListener implements SpeechSynthesizerListener {
      */
     @Override
     public void onSpeechFinish(String utteranceId) {
-        if (BuildConfig.DEBUG) {
+        if (YuYinHeChengUtils.mDebug) {
             Log.i(TAG,"播放结束回调, 序列号:" + utteranceId);
         }
     }
@@ -82,7 +82,7 @@ public class MessageListener implements SpeechSynthesizerListener {
      */
     @Override
     public void onError(String utteranceId, SpeechError speechError) {
-        if (BuildConfig.DEBUG) {
+        if (YuYinHeChengUtils.mDebug) {
             Log.i(TAG,"错误发生：" + speechError.description + "，错误编码："
                     + speechError.code + "，序列号:" + utteranceId);
         }

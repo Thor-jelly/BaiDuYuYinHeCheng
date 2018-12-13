@@ -6,7 +6,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.util.Log;
-import com.jelly.thor.baiduyuyinhecheng.BuildConfig;
+import com.jelly.thor.baiduyuyinhecheng.YuYinHeChengUtils;
 
 /**
  * 在新线程中调用initTTs方法。防止UI柱塞
@@ -56,11 +56,11 @@ public class NonBlockSyntherizer extends MySyntherizer {
                         isInitSuccess = init(config);
                         if (isInitSuccess) {
                             // speak("初始化成功");
-                            if (BuildConfig.DEBUG) {
+                            if (YuYinHeChengUtils.mDebug) {
                                 Log.i(TAG, "NonBlockSyntherizer 初始化成功");
                             }
                         } else {
-                            if (BuildConfig.DEBUG) {
+                            if (YuYinHeChengUtils.mDebug) {
                                 Log.i(TAG, "合成引擎初始化失败, 请查看日志");
                             }
                         }
