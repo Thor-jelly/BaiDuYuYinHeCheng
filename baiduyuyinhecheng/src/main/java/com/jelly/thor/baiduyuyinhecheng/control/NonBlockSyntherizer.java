@@ -56,11 +56,11 @@ public class NonBlockSyntherizer extends MySyntherizer {
                         isInitSuccess = init(config);
                         if (isInitSuccess) {
                             // speak("初始化成功");
-                            if (YuYinHeChengUtils.mDebug) {
+                            if (YuYinHeChengUtils.debug) {
                                 Log.i(TAG, "NonBlockSyntherizer 初始化成功");
                             }
                         } else {
-                            if (YuYinHeChengUtils.mDebug) {
+                            if (YuYinHeChengUtils.debug) {
                                 Log.i(TAG, "合成引擎初始化失败, 请查看日志");
                             }
                         }

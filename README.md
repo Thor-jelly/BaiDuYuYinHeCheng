@@ -1,6 +1,6 @@
 # 百度语音合成集成
 
-[![GitHub release](https://img.shields.io/badge/release-1.0.6-green.svg)]()
+[![GitHub release](https://img.shields.io/badge/release-1.0.7-green.svg)]()
 
 # 自己构建成工具类
 
@@ -32,6 +32,12 @@ if (YuYinHeChengUtils.getInitSuccess()) {//判断是否初始化成功
 
 ```
 YuYinHeChengUtils.onDestroy()
+```
+
+## 5.设置是否打印日志
+
+```
+    YuYinHeChengUtils.debug//默认为true
 ```
 
 
