@@ -78,15 +78,12 @@ public class AutoCheck {
     }
 
     public void check(final InitConfig initConfig, final Handler handler) {
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                AutoCheck obj = innerCheck(initConfig);
-                isFinished = true;
-                synchronized (obj) { // 偶发，同步线程信息
-                    Message msg = handler.obtainMessage(100, obj);
-                    handler.sendMessage(msg);
-                }
+        Thread t = new Thread(() -> {
+            AutoCheck obj = innerCheck(initConfig);
+            isFinished = true;
+            synchronized (obj) { // 偶发，同步线程信息
+                Message msg = handler.obtainMessage(100, obj);
+                handler.sendMessage(msg);
             }
         });
         t.start();

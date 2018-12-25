@@ -1,6 +1,6 @@
 # 百度语音合成集成
 
-[![GitHub release](https://img.shields.io/badge/release-1.0.8-green.svg)]()
+[![GitHub release](https://img.shields.io/badge/release-1.0.9-green.svg)]()
 
 # 自己构建成工具类
 

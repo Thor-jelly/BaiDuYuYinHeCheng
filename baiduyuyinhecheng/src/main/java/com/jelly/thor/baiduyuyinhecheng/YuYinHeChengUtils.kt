@@ -106,9 +106,15 @@ object YuYinHeChengUtils {
                 val showDoNotAskAgainPermissions = showDoNotAskAgainPermissions(permissions)
 
                 showDoNotAskAgainPermissions?.let {
-                    Toast.makeText(this.activity, "你拒绝了权限申请，请同意！", Toast.LENGTH_SHORT).show()
+                    if (activity != null) {
+                        Toast.makeText(this.activity!!, "你拒绝了权限申请，请同意！", Toast.LENGTH_SHORT).show()
+                    }
                     initPermission()
-                } ?: Toast.makeText(this.activity, "您有不再提示的权限，请到设置界面允许该权限", Toast.LENGTH_SHORT).show()
+                } ?: run {
+                    if (activity != null) {
+                        Toast.makeText(this.activity!!, "您有不再提示的权限，请到设置界面允许该权限", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }
@@ -245,30 +251,32 @@ object YuYinHeChengUtils {
         val listener = null
 
         GlobalScope.launch(Dispatchers.Default) {
-//            Log.d("123===", "当前线程名称=${Thread.currentThread()}")
+            //            Log.d("123===", "当前线程名称=${Thread.currentThread()}")
             val params = getParams()
             // appId appKey secretKey 网站上您申请的应用获取。注意使用离线合成功能的话，需要应用中填写您app的包名。包名在build.gradle中获取。
             val initConfig = InitConfig(appId, appKey, secretKey, ttsModel, params, listener)
             // 如果您集成中出错，请将下面一段代码放在和demo中相同的位置，并复制InitConfig 和 AutoCheck到您的项目中
             // 上线时请删除AutoCheck的调用
             if (debug) {
-                AutoCheck.getInstance(activity!!.applicationContext).check(initConfig, @SuppressLint("HandlerLeak")
-                object : Handler() {
-                    override fun handleMessage(msg: Message) {
-                        if (msg.what == 100) {
-                            val autoCheck = msg.obj as AutoCheck
-                            synchronized(autoCheck) {
-                                val message = autoCheck.obtainDebugMessage()
-                                // 可以用下面一行替代，在logcat中查看代码
-                                Log.w("AutoCheckMessage", message);
+                launch(Dispatchers.Main) {
+                    AutoCheck.getInstance(activity!!.applicationContext).check(initConfig, @SuppressLint("HandlerLeak")
+                    object : Handler() {
+                        override fun handleMessage(msg: Message) {
+                            if (msg.what == 100) {
+                                val autoCheck = msg.obj as AutoCheck
+                                synchronized(autoCheck) {
+                                    val message = autoCheck.obtainDebugMessage()
+                                    // 可以用下面一行替代，在logcat中查看代码
+                                    Log.w("AutoCheckMessage", message);
+                                }
                             }
                         }
-                    }
-                })
+                    })
+                }
             }
 
             launch(Dispatchers.Main) {
-//                Log.d("123===", "1当前线程名称=${Thread.currentThread()}")
+                //                Log.d("123===", "1当前线程名称=${Thread.currentThread()}")
                 synthesizer =
                         NonBlockSyntherizer(activity as Context, initConfig) // 此处可以改为MySyntherizer 了解调用过程
             }
