@@ -1,6 +1,6 @@
 # 百度语音合成集成
 
-[![GitHub release](https://img.shields.io/badge/release-1.0.7-green.svg)]()
+[![GitHub release](https://img.shields.io/badge/release-1.0.8-green.svg)]()
 
 # 自己构建成工具类
 
@@ -47,7 +47,7 @@ YuYinHeChengUtils.onDestroy()
 1. 到[官网sdk下载界面](http://ai.baidu.com/sdk)下载android语音合成中的离在线融合sdk。
 2. 复制com.baidu.tts_xxx.jar到libs文件夹下
 3. 复制其中的assets离线语音文件到本地assets中
-    
+  
     ```
     其中
     m15:离线男声

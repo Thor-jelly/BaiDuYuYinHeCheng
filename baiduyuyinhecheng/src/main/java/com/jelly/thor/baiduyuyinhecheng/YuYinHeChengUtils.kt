@@ -20,6 +20,9 @@ import com.jelly.thor.baiduyuyinhecheng.control.InitConfig
 import com.jelly.thor.baiduyuyinhecheng.control.NonBlockSyntherizer
 import com.jelly.thor.baiduyuyinhecheng.util.AutoCheck
 import com.jelly.thor.baiduyuyinhecheng.util.OfflineResource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.*
 
@@ -241,30 +244,35 @@ object YuYinHeChengUtils {
         //需要监听合成状态的时候用到 val listener = MessageListener(mainHandler)
         val listener = null
 
-        val params = getParams()
-
-        // appId appKey secretKey 网站上您申请的应用获取。注意使用离线合成功能的话，需要应用中填写您app的包名。包名在build.gradle中获取。
-        val initConfig = InitConfig(this.appId, this.appKey, this.secretKey, this.ttsModel, params, listener)
-
-        // 如果您集成中出错，请将下面一段代码放在和demo中相同的位置，并复制InitConfig 和 AutoCheck到您的项目中
-        // 上线时请删除AutoCheck的调用
-        if (debug) {
-            AutoCheck.getInstance(this.activity!!.applicationContext).check(initConfig, @SuppressLint("HandlerLeak")
-            object : Handler() {
-                override fun handleMessage(msg: Message) {
-                    if (msg.what == 100) {
-                        val autoCheck = msg.obj as AutoCheck
-                        synchronized(autoCheck) {
-                            val message = autoCheck.obtainDebugMessage()
-                            // 可以用下面一行替代，在logcat中查看代码
-                            Log.w("AutoCheckMessage", message);
+        GlobalScope.launch(Dispatchers.Default) {
+//            Log.d("123===", "当前线程名称=${Thread.currentThread()}")
+            val params = getParams()
+            // appId appKey secretKey 网站上您申请的应用获取。注意使用离线合成功能的话，需要应用中填写您app的包名。包名在build.gradle中获取。
+            val initConfig = InitConfig(appId, appKey, secretKey, ttsModel, params, listener)
+            // 如果您集成中出错，请将下面一段代码放在和demo中相同的位置，并复制InitConfig 和 AutoCheck到您的项目中
+            // 上线时请删除AutoCheck的调用
+            if (debug) {
+                AutoCheck.getInstance(activity!!.applicationContext).check(initConfig, @SuppressLint("HandlerLeak")
+                object : Handler() {
+                    override fun handleMessage(msg: Message) {
+                        if (msg.what == 100) {
+                            val autoCheck = msg.obj as AutoCheck
+                            synchronized(autoCheck) {
+                                val message = autoCheck.obtainDebugMessage()
+                                // 可以用下面一行替代，在logcat中查看代码
+                                Log.w("AutoCheckMessage", message);
+                            }
                         }
                     }
-                }
-            })
+                })
+            }
+
+            launch(Dispatchers.Main) {
+//                Log.d("123===", "1当前线程名称=${Thread.currentThread()}")
+                synthesizer =
+                        NonBlockSyntherizer(activity as Context, initConfig) // 此处可以改为MySyntherizer 了解调用过程
+            }
         }
-        synthesizer =
-                NonBlockSyntherizer(this.activity as Context, initConfig) // 此处可以改为MySyntherizer 了解调用过程
     }
 
 
